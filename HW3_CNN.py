@@ -12,6 +12,7 @@
 
 import PIL
 import shutil
+import seaborn as sns
 import os
 import pandas as pd
 import numpy as np
