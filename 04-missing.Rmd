@@ -1,0 +1,28 @@
+# Missing values
+
+## COVID and Kobe Bryant's Death
+
+Due to the nature of the package/website, NA's are never returned for game statistics. 
+If a player is missing entirely from a request, that means they did not play at all for the requested time period. 
+Any difference in the number of games used to calculate averages reflects the real world. 
+If a game of statistics are missing from an average, they did not play that game due to whatever reason. 
+For example, we noticed Kevin Durant missing data for the 19-20 season -- this was due to a 
+torn achilles sidelining him for the entire year.
+
+#Injury and Position
+
+
+The data for the injuries were collected separately, and hence there were just two tuples in which 5 columns had NA Values 
+
+```{r}
+preprocessedInjuryData <- read.csv('data/preprocessedInjuryData.csv')
+preprocessedInjuryData <- preprocessedInjuryData %>%
+                          select(-Acquired)
+new_DF <- preprocessedInjuryData[rowSums(is.na(preprocessedInjuryData)) > 0,]
+tidyData <- new_DF %>% rownames_to_column('id') %>% gather(key,value,-Relinquished)%>%
+  mutate(missing=ifelse(is.na(value),'yes','no'))
+ggplot(tidyData,aes(x=key,y=fct_rev(Relinquished),fill=missing))+geom_tile(color='white')+ggtitle('NAs for dataset Injury')+coord_flip()
+#tidyData
+```
+
+There is no pattern in the NA's observed. The reason the NA is observed was because of a data mismatch/data not being available for the corresponding players i.e Devin Booker and Deonte Burton
